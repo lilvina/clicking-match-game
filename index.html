@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicking Image</title>
+    <style>
+      img {
+        position: absolute;
+        width: 5em;
+        background-image: none;
+        background-position: 0 0;
+      }
+      body {
+        background-color: orange;
+      }
+
+      div {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+
+      }
+
+      #right {
+        left: 500px;
+        border-left: 1px solid;
+      }
+    </style>
+  </head>
+  <body onload="generateGokuFaces()">
+    <h1>Matching Game: Goku Version</h1>
+    <p>Click on the extra Goku face on the left.</p>
+    <div id="left">
+
+    </div>
+    <div id="right">
+
+    </div>
+    <script>
+      let numGokuFaces = 6
+      const leftSide = document.getElementById('left')
+      const rightSide = document.getElementById('right')
+      function generateGokuFaces() {
+        for(let i = 0; i < numGokuFaces; i++) {
+          let goku = document.createElement('img')
+          goku.src = 'image/kid-goku.png'
+          let randomTop = Math.floor(Math.random() * 400) + 1
+          let randomLeft = Math.floor(Math.random() * 400) + 1
+          goku.style.top = randomTop + 'px'
+          goku.style.left = randomLeft + 'px'
+          leftSide.appendChild(goku)
+        }
+        const leftImg = leftSide.cloneNode(true)
+        leftImg.removeChild(leftImg.lastChild)
+        rightSide.appendChild(leftImg)
+        leftSide.addEventListener('click', nextLevel)
+        document.body.addEventListener('click', gameOver)
+      }
+
+      function nextLevel() {
+        event.stopPropagation()
+        numGokuFaces += 6
+
+        while(leftSide.firstChild) {
+          leftSide.removeChild(leftSide.firstChild)
+        }
+        while(rightSide.firstChild) {
+          rightSide.removeChild(rightSide.firstChild)
+        }
+        generateGokuFaces()
+      }
+
+      function gameOver() {
+        alert('Game is finished!')
+        leftSide.removeEventListener('click', nextLevel)
+        document.body.removeEventListener('click', gameOver)
+      }
+    </script>
+  </body>
+</html>
